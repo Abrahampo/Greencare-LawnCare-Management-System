@@ -1,0 +1,65 @@
+﻿@page "/employees"
+
+@using Greencare.Models
+@using Microsoft.EntityFrameworkCore
+@inject Greencare.Data.GreencareContext Context
+
+<h3>Employees</h3>
+
+<p>
+    <a href="/employees/create" class="btn btn-primary">
+        Add Employee
+    </a>
+</p>
+
+@if (employees == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var employee in employees)
+        {
+            <tr>
+                <td>@employee.FirstName</td>
+                <td>@employee.LastName</td>
+                <td>@employee.Phone</td>
+                <td>@employee.Position</td>
+
+                <td>
+                    <a href="/employees/edit/@employee.EmployeeID"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="/employees/delete/@employee.EmployeeID"
+                       class="btn btn-danger btn-sm ms-2">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Employee>? employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        employees = await Context.Employees.ToListAsync();
+    }
+}

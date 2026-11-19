@@ -1,0 +1,48 @@
+﻿@page "/services/delete/{id:int}"
+@rendermode InteractiveServer
+
+@using Greencare.Models
+
+@inject Greencare.Data.GreencareContext Context
+@inject NavigationManager Navigation
+
+<h3>Delete Service</h3>
+
+@if (service == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>
+        Delete:
+        <strong>@service.ServiceName</strong>?
+    </p>
+
+    <button class="btn btn-danger"
+            @onclick="DeleteService">
+        Delete
+    </button>
+}
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private Service? service;
+
+    protected override async Task OnInitializedAsync()
+    {
+        service = await Context.Services.FindAsync(id);
+    }
+
+    private async Task DeleteService()
+    {
+        Context.Services.Remove(service!);
+
+        await Context.SaveChangesAsync();
+
+        Navigation.NavigateTo("/services", true);
+    }
+}

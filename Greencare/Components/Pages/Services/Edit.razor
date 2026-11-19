@@ -1,0 +1,64 @@
+﻿@page "/services/edit/{id:int}"
+
+@using Greencare.Models
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject Greencare.Data.GreencareContext Context
+@inject NavigationManager Navigation
+
+<h3>Edit Service</h3>
+
+@if (service == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@service"
+              OnSubmit="@SaveService"
+              FormName="EditServiceForm">
+
+        <div class="mb-3">
+            <label>Service Name</label>
+            <InputText class="form-control"
+                       @bind-Value="service.ServiceName" />
+        </div>
+
+        <div class="mb-3">
+            <label>Description</label>
+            <InputText class="form-control"
+                       @bind-Value="service.Description" />
+        </div>
+
+        <div class="mb-3">
+            <label>Price</label>
+            <InputNumber TValue="decimal"
+                         class="form-control"
+                         @bind-Value="service.Price" />
+        </div>
+
+        <button class="btn btn-primary">
+            Save
+        </button>
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private Service? service;
+
+    protected override async Task OnInitializedAsync()
+    {
+        service = await Context.Services.FindAsync(id);
+    }
+
+    private async Task SaveService()
+    {
+        await Context.SaveChangesAsync();
+
+        Navigation.NavigateTo("/services", true);
+    }
+}

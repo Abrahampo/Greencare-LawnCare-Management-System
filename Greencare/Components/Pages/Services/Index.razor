@@ -1,0 +1,63 @@
+﻿@page "/services"
+
+@using Greencare.Models
+@using Microsoft.EntityFrameworkCore
+@inject Greencare.Data.GreencareContext Context
+
+<h3>Services</h3>
+
+<p>
+    <a href="/services/create" class="btn btn-primary">
+        Add Service
+    </a>
+</p>
+
+@if (services == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var service in services)
+        {
+            <tr>
+                <td>@service.ServiceName</td>
+                <td>@service.Description</td>
+                <td>@service.Price</td>
+
+                <td>
+                    <a href="/services/edit/@service.ServiceID"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="/services/delete/@service.ServiceID"
+                       class="btn btn-danger btn-sm ms-2">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Service>? services;
+
+    protected override async Task OnInitializedAsync()
+    {
+        services = await Context.Services.ToListAsync();
+    }
+}
