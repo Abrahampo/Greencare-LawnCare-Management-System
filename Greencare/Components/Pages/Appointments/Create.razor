@@ -1,4 +1,5 @@
 ﻿@page "/appointments/create"
+@rendermode InteractiveServer
 
 @using Greencare.Models
 @using Microsoft.AspNetCore.Components.Forms
@@ -9,24 +10,27 @@
 <h3>Add Appointment</h3>
 
 <EditForm Model="@appointment"
-          OnSubmit="@CreateAppointment"
-          FormName="CreateAppointmentForm">
+          FormName="CreateAppointmentForm"
+        OnSubmit="@CreateAppointment">
 
     <div class="mb-3">
         <label>Customer ID</label>
-        <InputNumber class="form-control"
+        <InputNumber TValue="int"
+                     class="form-control"
                      @bind-Value="appointment.CustomerID" />
     </div>
 
     <div class="mb-3">
         <label>Employee ID</label>
-        <InputNumber class="form-control"
+        <InputNumber TValue="int"
+                     class="form-control"
                      @bind-Value="appointment.EmployeeID" />
     </div>
 
     <div class="mb-3">
         <label>Service ID</label>
-        <InputNumber class="form-control"
+        <InputNumber TValue="int"
+                     class="form-control"
                      @bind-Value="appointment.ServiceID" />
     </div>
 
@@ -56,21 +60,17 @@
 
 @code {
 
-    private Appointment appointment = new();
+    private Appointment appointment = new()
+    {
+        AppointmentDate = DateTime.Today
+    };
 
     private async Task CreateAppointment()
-{
-    appointment.CustomerID = 13;
-    appointment.EmployeeID = 1;
-    appointment.ServiceID = 11;
+    {
+        Context.Appointments.Add(appointment);
 
-    appointment.Status = "Scheduled";
-    appointment.AppointmentDate = DateTime.Today;
+        await Context.SaveChangesAsync();
 
-    await Context.Appointments.AddAsync(appointment);
-
-    await Context.SaveChangesAsync();
-
-    Navigation.NavigateTo("/appointments", true);
-}
+        Navigation.NavigateTo("/appointments", true);
+    }
 }

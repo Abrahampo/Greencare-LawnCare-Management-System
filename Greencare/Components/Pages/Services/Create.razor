@@ -47,10 +47,7 @@
 
     private async Task CreateService()
     {
-        service.ServiceName = "TEST SERVICE";
-        service.Description = "Weekly Test";
-        service.Price = 50;
-
+       
         Context.Services.Add(service);
 
         await Context.SaveChangesAsync();

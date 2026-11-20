@@ -1,5 +1,5 @@
 ﻿@page "/properties/create"
-
+@rendermode InteractiveServer
 @using Greencare.Models
 @using Microsoft.AspNetCore.Components.Forms
 
@@ -67,7 +67,7 @@
 
     private async Task CreateProperty()
 {
-    property.CustomerID = 13;
+    
 
     Context.Properties.Add(property);
 

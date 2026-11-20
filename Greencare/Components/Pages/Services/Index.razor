@@ -33,10 +33,11 @@ else
         @foreach (var service in services)
         {
             <tr>
+                <td>@service.ServiceID</td>
                 <td>@service.ServiceName</td>
                 <td>@service.Description</td>
                 <td>@service.Price</td>
-                <td>@service.ServiceID</td>
+                
 
                 <td>
                     <a href="/services/edit/@service.ServiceID"

@@ -1,7 +1,7 @@
 ﻿@page "/invoices/create"
+@rendermode InteractiveServer
 
 @using Greencare.Models
-@using Microsoft.AspNetCore.Components.Forms
 
 @inject Greencare.Data.GreencareContext Context
 @inject NavigationManager Navigation
@@ -9,12 +9,14 @@
 <h3>Add Invoice</h3>
 
 <EditForm Model="@invoice"
-          OnSubmit="@CreateInvoice"
+          OnValidSubmit="@CreateInvoice"
           FormName="CreateInvoiceForm">
+           <DataAnnotationsValidator />
 
     <div class="mb-3">
         <label>Appointment ID</label>
-        <InputNumber class="form-control"
+        <InputNumber TValue="int"
+                     class="form-control"
                      @bind-Value="invoice.AppointmentID" />
     </div>
 
@@ -26,7 +28,8 @@
 
     <div class="mb-3">
         <label>Total Amount</label>
-        <InputNumber class="form-control"
+        <InputNumber TValue="decimal"
+                     class="form-control"
                      @bind-Value="invoice.TotalAmount" />
     </div>
 
@@ -36,7 +39,7 @@
                    @bind-Value="invoice.PaymentStatus" />
     </div>
 
- 
+  
 
 
     <button type="submit"
@@ -53,20 +56,17 @@
 
 @code {
 
-    private Invoice invoice = new();
+    private Invoice invoice = new()
+    {
+        InvoiceDate = DateTime.Today
+    };
 
-private async Task CreateInvoice()
-{
-    invoice.AppointmentID = 8;
-    invoice.InvoiceDate = DateTime.Today;
-    invoice.TotalAmount = 50;
-    invoice.PaymentStatus = "Unpaid";
+    private async Task CreateInvoice()
+    {
+        Context.Invoices.Add(invoice);
 
-    Context.Invoices.Add(invoice);
+        await Context.SaveChangesAsync();
 
-    await Context.SaveChangesAsync();
-
-    Navigation.NavigateTo("/invoices", true);
-}
-
+        Navigation.NavigateTo("/invoices", true);
+    }
 }
