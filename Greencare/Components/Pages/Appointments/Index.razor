@@ -1,0 +1,71 @@
+﻿@page "/appointments"
+
+@using Greencare.Models
+@using Microsoft.EntityFrameworkCore
+
+@inject Greencare.Data.GreencareContext Context
+
+<h3>Appointments</h3>
+
+<p>
+    <a href="/appointments/create"
+       class="btn btn-primary">
+        Add Appointment
+    </a>
+</p>
+
+@if (appointments == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employee ID</th>
+                <th>Service ID</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var appointment in appointments)
+        {
+            <tr>
+                <td>@appointment.AppointmentID</td>
+                <td>@appointment.CustomerID</td>
+                <td>@appointment.EmployeeID</td>
+                <td>@appointment.ServiceID</td>
+                <td>@appointment.AppointmentDate</td>
+                <td>@appointment.Status</td>
+
+                <td>
+                    <a href="/appointments/edit/@appointment.AppointmentID"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="/appointments/delete/@appointment.AppointmentID"
+                       class="btn btn-danger btn-sm ms-2">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Appointment>? appointments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        appointments = await Context.Appointments.ToListAsync();
+    }
+}

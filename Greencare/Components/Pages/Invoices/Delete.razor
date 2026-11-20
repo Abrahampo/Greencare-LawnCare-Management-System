@@ -1,0 +1,62 @@
+﻿@page "/invoices/delete/{id:int}"
+
+@using Greencare.Models
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject Greencare.Data.GreencareContext Context
+@inject NavigationManager Navigation
+
+<h3>Delete Invoice</h3>
+
+@if (invoice == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>
+        Delete Invoice ID:
+        <strong>@invoice.InvoiceID</strong>?
+    </p>
+
+    <EditForm Model="@invoice"
+              OnSubmit="@DeleteInvoice"
+              FormName="DeleteInvoiceForm">
+
+        <button type="submit"
+                class="btn btn-danger">
+            Delete
+        </button>
+
+        <a href="/invoices"
+           class="btn btn-secondary ms-2">
+            Cancel
+        </a>
+
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private Invoice? invoice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        invoice = await Context.Invoices.FindAsync(id);
+    }
+
+    private async Task DeleteInvoice()
+    {
+        if (invoice != null)
+        {
+            Context.Invoices.Remove(invoice);
+
+            await Context.SaveChangesAsync();
+        }
+
+        Navigation.NavigateTo("/invoices", true);
+    }
+}

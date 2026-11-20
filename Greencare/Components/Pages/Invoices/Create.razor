@@ -1,0 +1,78 @@
+﻿@page "/invoices/create"
+
+@using Greencare.Models
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject Greencare.Data.GreencareContext Context
+@inject NavigationManager Navigation
+
+<h3>Add Invoice</h3>
+
+<EditForm Model="@invoice"
+          OnSubmit="@CreateInvoice"
+          FormName="CreateInvoiceForm">
+
+    <div class="mb-3">
+        <label>Appointment ID</label>
+        <InputNumber class="form-control"
+                     @bind-Value="invoice.AppointmentID" />
+    </div>
+
+    <div class="mb-3">
+        <label>Invoice Date</label>
+        <InputDate class="form-control"
+                   @bind-Value="invoice.InvoiceDate" />
+    </div>
+
+    <div class="mb-3">
+        <label>Total Amount</label>
+        <InputNumber class="form-control"
+                     @bind-Value="invoice.TotalAmount" />
+    </div>
+
+    <div class="mb-3">
+        <label>Payment Status</label>
+        <InputText class="form-control"
+                   @bind-Value="invoice.PaymentStatus" />
+    </div>
+
+    <p>
+    DEBUG:
+    @invoice.AppointmentID |
+    @invoice.InvoiceDate |
+    @invoice.TotalAmount |
+    @invoice.PaymentStatus
+</p>
+
+
+    <button type="submit"
+            class="btn btn-primary">
+        Save
+    </button>
+
+    <a href="/invoices"
+       class="btn btn-secondary ms-2">
+        Cancel
+    </a>
+
+</EditForm>
+
+@code {
+
+    private Invoice invoice = new();
+
+private async Task CreateInvoice()
+{
+    invoice.AppointmentID = 8;
+    invoice.InvoiceDate = DateTime.Today;
+    invoice.TotalAmount = 50;
+    invoice.PaymentStatus = "Unpaid";
+
+    Context.Invoices.Add(invoice);
+
+    await Context.SaveChangesAsync();
+
+    Navigation.NavigateTo("/invoices", true);
+}
+
+}

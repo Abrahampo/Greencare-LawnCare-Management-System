@@ -21,6 +21,7 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Phone</th>
@@ -33,6 +34,7 @@ else
         @foreach (var employee in employees)
         {
             <tr>
+                 <td>@employee.EmployeeID</td>
                 <td>@employee.FirstName</td>
                 <td>@employee.LastName</td>
                 <td>@employee.Phone</td>

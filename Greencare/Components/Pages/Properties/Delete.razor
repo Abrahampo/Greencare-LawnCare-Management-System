@@ -1,0 +1,62 @@
+﻿@page "/properties/delete/{id:int}"
+
+@using Greencare.Models
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject Greencare.Data.GreencareContext Context
+@inject NavigationManager Navigation
+
+<h3>Delete Property</h3>
+
+@if (property == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>
+        Delete Property ID:
+        <strong>@property.PropertyID</strong>?
+    </p>
+
+    <EditForm FormName="DeletePropertyForm"
+              Model="@property"
+              OnSubmit="@DeleteProperty">
+
+        <button type="submit"
+                class="btn btn-danger">
+            Delete
+        </button>
+
+        <a href="/properties"
+           class="btn btn-secondary ms-2">
+            Cancel
+        </a>
+
+    </EditForm>
+}
+
+@code {
+
+    [Parameter]
+    public int id { get; set; }
+
+    private Property? property;
+
+    protected override async Task OnInitializedAsync()
+    {
+        property = await Context.Properties.FindAsync(id);
+    }
+
+    private async Task DeleteProperty()
+    {
+        if (property != null)
+        {
+            Context.Properties.Remove(property);
+
+            await Context.SaveChangesAsync();
+        }
+
+        Navigation.NavigateTo("/properties", true);
+    }
+}

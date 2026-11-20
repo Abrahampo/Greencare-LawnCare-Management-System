@@ -1,0 +1,70 @@
+﻿@page "/invoices"
+
+@using Greencare.Models
+@using Microsoft.EntityFrameworkCore
+
+@inject Greencare.Data.GreencareContext Context
+
+<h3>Invoices</h3>
+
+<p>
+    <a href="/invoices/create"
+       class="btn btn-primary">
+        Add Invoice
+    </a>
+</p>
+
+@if (invoices == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Appointment ID</th>
+                <th>Invoice Date</th>
+                <th>Total Amount</th>
+                <th>Payment Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var invoice in invoices)
+        {
+            <tr>
+                <td>@invoice.InvoiceID</td>
+                <td>@invoice.AppointmentID</td>
+                <td>@invoice.InvoiceDate</td>
+                <td>@invoice.TotalAmount</td>
+                <td>@invoice.PaymentStatus</td>
+
+                <td>
+                    <a href="/invoices/edit/@invoice.InvoiceID"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="/invoices/delete/@invoice.InvoiceID"
+                       class="btn btn-danger btn-sm ms-2">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Invoice>? invoices;
+
+    protected override async Task OnInitializedAsync()
+    {
+        invoices = await Context.Invoices.ToListAsync();
+    }
+}
