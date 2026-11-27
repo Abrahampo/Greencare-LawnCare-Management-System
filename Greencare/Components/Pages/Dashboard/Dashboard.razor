@@ -1,3 +1,93 @@
 ﻿@page "/dashboard"
+@rendermode InteractiveServer
 
-<h3>Dashboard</h3>
+@using Microsoft.EntityFrameworkCore
+
+@inject Greencare.Data.GreencareContext Context
+
+<h3>GreenCare Dashboard</h3>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-bg-primary">
+            <div class="card-body">
+                <h5>Total Employees</h5>
+                <h2>@employeeCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-bg-success">
+            <div class="card-body">
+                <h5>Total Services</h5>
+                <h2>@serviceCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-bg-warning">
+            <div class="card-body">
+                <h5>Total Properties</h5>
+                <h2>@propertyCount</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-bg-info">
+            <div class="card-body">
+                <h5>Total Appointments</h5>
+                <h2>@appointmentCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-bg-danger">
+            <div class="card-body">
+                <h5>Total Invoices</h5>
+                <h2>@invoiceCount</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-bg-dark">
+            <div class="card-body">
+                <h5>Total Revenue</h5>
+                <h2>$@totalRevenue</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    private int employeeCount;
+    private int serviceCount;
+    private int propertyCount;
+    private int appointmentCount;
+    private int invoiceCount;
+
+    private decimal totalRevenue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        employeeCount = await Context.Employees.CountAsync();
+        serviceCount = await Context.Services.CountAsync();
+        propertyCount = await Context.Properties.CountAsync();
+        appointmentCount = await Context.Appointments.CountAsync();
+        invoiceCount = await Context.Invoices.CountAsync();
+
+        totalRevenue = await Context.Invoices
+            .SumAsync(i => i.TotalAmount);
+    }
+}

@@ -4,62 +4,67 @@
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<input type="checkbox"
+       title="Navigation menu"
+       class="navbar-toggler" />
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div class="nav-scrollable"
+     onclick="document.querySelector('.navbar-toggler').click()">
+
     <nav class="nav flex-column">
+
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link"
+                     href=""
+                     Match="NavLinkMatch.All">
+                Home
+            </NavLink>
+        </div>
+
+        
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="employees">
+                Employees
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link"
+                     href="services">
+                Services
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link"
+                     href="properties">
+                Properties
             </NavLink>
         </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="appointments">
+                Appointments
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="invoices">
+                Invoices
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link"
+                     href="dashboard">
+                Dashboard
+            </NavLink>
+        </div>
+
     </nav>
+
 </div>
-
-<div class="nav-item px-3">
-    <NavLink class="nav-link" href="customers">
-        <span class="bi bi-people-fill-nav-menu" aria-hidden="true"></span>
-        Customers
-    </NavLink>
-</div>
-
-<div class="nav-item px-3">
-    <NavLink class="nav-link" href="employees">
-        Employees
-    </NavLink>
-</div>
-
-<div class="nav-item px-3">
-    <NavLink class="nav-link" href="services">
-        Services
-    </NavLink>
-</div>
-
-<div class="nav-item px-3">
-    <NavLink class="nav-link" href="properties">
-        Properties
-    </NavLink>
-</div>
-
-<div class="nav-item px-3">
-    <NavLink class="nav-link" href="appointments">
-        Appointments
-    </NavLink>
-</div>
-
-<NavLink class="nav-link" href="invoices">
-    Invoices
-</NavLink>
-
